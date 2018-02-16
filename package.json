@@ -1,0 +1,32 @@
+{
+  "name": "power-trello",
+  "version": "0.0.1",
+  "description": "Power Trello",
+  "main": "dest/index.js",
+  "scripts": {
+    "typescript": "node_modules/bin/tsc userscript.ts",
+    "webpack": "node_modules/bin/webpack --config webpack.config.js",
+    "run": "node userscript.js",
+    "sass": "./node_modules/node-sass/bin/node-sass src/scss/_style.scss -o dist",
+    "postinstall": "npm rebuild node-sass"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://bitbucket.org/echo__off/trellocustomcolors.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/echo__off/trellocustomcolors#readme",
+  "devDependencies": {
+    "@types/node": "^9.4.6",
+    "css-loader": "^0.28.9",
+    "gulp": "^3.9.1",
+    "lib-sass-data-uri": "0.0.3",
+    "node-sass": "^4.7.2",
+    "style-loader": "^0.20.1",
+    "ts-loader": "^3.5.0",
+    "typescript": "^2.7.1",
+    "webpack": "^3.11.0"
+  },
+  "dependencies": {}
+}
