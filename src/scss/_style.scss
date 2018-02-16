@@ -1,3 +1,267 @@
+@import "variables";
+
 body {
-    background: data-url('./assets/icon-big.png');
+    background-position: 50% 50%;
+}
+
+.window {
+    box-shadow: 0px -5px 0px unquote($colorNoTeam);
+
+    @for $i from 0 to length($textTeamArray) {
+        &.#{nth($textTeamArray, $i+1)} {
+            box-shadow: 0px -5px 0px unquote(nth($colorTeamArray, $i+1));
+        }
+    }
+
+    &.has-bug {
+        background-image: data-url('./assets/icon-big.png');
+        background-repeat: no-repeat;
+        background-size: 150px;
+        background-position: 105% -20px;
+    }
+
+    &.has-bug .window-header .window-title textarea,
+    .window-sidebar .window-module h3 {
+        text-shadow: #EDEFF0 1px 0px 0px,
+                     #EDEFF0 -1px 0px 0px,
+                     #EDEFF0 0px 1px 0px,
+                     #EDEFF0 0px -1px 0px;
+    }
+
+    .card-detail-badge.is-clickable {
+        text-decoration: none;
+        text-align: center;
+    }
+
+    .js-plugin-badges {
+        width: 100%;
+        float: left;
+
+        .card-detail-item {
+            margin-right: 20px !important;
+
+            &:last-of-type {
+                margin-right: 0 !important;
+            }
+        }
+    }
+
+    @for $i from 0 to length($textTeamArray) {
+        &.#{nth($textTeamArray, $i+1)} {
+            .js-plugin-badges .card-detail-item {
+                &.#{$textTeamTitle} {
+                    .card-detail-badge {
+                        background-color: unquote(nth($colorTeamArray, $i+1));
+                        color: #fff;
+                        font-weight: 800;
+
+                        &:hover {
+                            opacity: .75;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @for $i from 0 to length($textStatusArray) {
+        .js-plugin-badges .card-detail-item {
+            &.#{nth($textStatusArray, $i+1)} {
+                .card-detail-badge {
+                    background-color: unquote(nth($colorStatusArray, $i+1));
+                    color: #fff;
+                    font-weight: 800;
+
+                    &:hover {
+                        opacity: .75;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.list-card {
+    a {
+        margin-top: 8px;
+    }
+
+    .placeholder {
+        padding-top: 2px;
+    }
+
+    &:not(.placeholder) {
+        box-shadow: 0px -3px 0px unquote($colorNoTeam);
+        margin-bottom: 6px;
+        margin-top: 9px;
+    }
+
+    .list-card-labels .card-label {
+        height: auto;
+        line-height: 100%;
+        width: auto;
+        text-shadow: 0px 0px 1px #666;
+        padding: 5px 6px;
+        font-size: 11pt;
+        width: auto;
+        max-width: none;
+        min-width: auto;
+        pointer-events: none;
+    }
+
+    &.has-bug {
+        background-size: 48px;
+        background-position: 106% -6px;
+        background-repeat: no-repeat;
+        background-image: data-url('./assets/icon-small.png');
+    }
+
+    .list-card-members {
+        .member {
+            border-radius: 50%;
+            border: 2px solid unquote($colorNoTeam);
+        }
+    }
+    &.is-stickered {
+        &.active-card {
+            .list-card-details, .list-card.is-stickered .list-card-details { 
+                background-color: unset;
+            }
+        } 
+
+        .list-card-details {
+            margin-top: unset;
+        }
+
+        .stickers {
+            position: absolute;
+            right: 0;
+            top: 100%;
+            transform: translateY(-100%);
+
+            .sticker {
+                top: 95% !important;
+                left: 99% !important;
+                transform: translateX(-100%) translateY(-100%);
+                height: 32px;
+                width: 32px;
+
+                img {
+                    height: 100%;
+                    width: 100%;
+                    transform: rotate(0deg) !important;
+                }
+            }
+        }
+    }
+    
+
+    .list-card-details {
+        .badges {
+            width: 100%;
+            margin-top: 5px;
+
+            .js-plugin-badges {
+                .badge {
+                    @for $i from 0 to length($textStatusArray) {
+                        &.#{nth($textStatusArray, $i+1)} {
+                            float: left;
+
+                            @if nth($textStatusArray, $i+1) != $textBranch {
+                                width: 100%;
+                            } @else {
+                                background-color: unquote(nth($colorStatusArray, $i+1));    
+                                margin-left: 2px;
+                                border-radius: 2px;
+                            }
+
+                            .badge-text {
+                                //testar se precisa desse if
+                                @if nth($textStatusArray, $i+1) != $textBranch {
+                                    background-color: unquote(nth($colorStatusArray, $i+1));    
+                                }
+                                padding: 4px;
+                                border-radius: 4px;
+                                text-shadow: rgb(102, 102, 102) 0px 0px 1px;
+                                color: #fff;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .js-plugin-badges .badge.team {
+            float: right;
+            margin-right: 0px;
+        }
+    }
+
+    @for $i from 0 to length($textTeamArray) {
+        &.#{nth($textTeamArray, $i+1)} {
+            box-shadow: 0px -3px 0px unquote(nth($colorTeamArray, $i+1));
+            margin-bottom: 6px;
+            margin-top: 9px;
+
+            &:first-child {
+                margin-top: 3px;
+            }
+
+            .list-card-details .badges .js-plugin-badges {
+                .badge.team {
+                    background-color: unquote(nth($colorTeamArray, $i+1));
+                    border-radius: 3px;
+                    padding-left: 4px;
+                    padding-right: 4px;
+                }
+
+                .badge-text {
+                    color: #fff;
+                    font-weight: 800;
+                }
+            }
+
+            .list-card-members .member {
+                border: 2px solid unquote(nth($colorTeamArray, $i+1));
+            }
+        }
+    }
+}
+
+.window-cover-stickers {
+    position: relative;
+    left: 0;
+    right: 0;
+    border: 0;
+    top: 0;
+
+    .sticker {
+        left: 0 !important;
+        top: 0 !important;
+        position: relative;
+
+        img {
+            opacity: 0.6;
+            transform: rotate(0deg) !important;
+        }
+    }
+
+    //.window-cover-stickers-only
+    &-only {
+        position: absolute;
+        background: transparent;
+        box-shadow: none;
+        bottom: 0;
+        right: 0;
+        width: auto;
+        height: auto;
+    }
+}
+
+.card-label.mod-card-detail { 
+    font-size: 11pt;
+}
+
+.list-header-num-cards.hide {
+    display: inline-block !important;
 }

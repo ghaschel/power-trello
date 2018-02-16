@@ -1,0 +1,20 @@
+$textTeam1: 'pgd-01';
+$textTeam2: 'pgd-02';
+$textTeamArray: ($textTeam1, $textTeam2);
+$textTeamTitle: 'time';
+$textFixed: 'corrigido';
+$textOpen: 'aberto';
+$textValidated: 'validado';
+$textBranch: 'branch';
+$textStatusArray: ($textFixed, $textOpen, $textValidated, $textBranch);
+
+
+$colorTeam1: '#ab7dab';
+$colorTeam2: '#5d9e9e';
+$colorTeamArray: ($colorTeam1, $colorTeam2);
+$colorFixed: '#85aed0';
+$colorOpen: '#d08585';
+$colorValidated: '#8cbd82';
+$colorBranch: '#d8884a';
+$colorStatusArray: ($colorFixed, $colorOpen, $colorValidated, $colorBranch);
+$colorNoTeam: '#a6a6a6';

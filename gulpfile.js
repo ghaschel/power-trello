@@ -30,24 +30,25 @@ gulp.task('sass', () => {
     return (
         sass.render({
             file: './src/scss/_style.scss',
-            outFile: './src/css/style.css',
             sourceMap: true,
             outputStyle: 'expanded',
-            errLogToConsole: true,
-            functions: Object.assign(sassDataURI, {other: function() {}})
+            functions: sassDataURI
         }, (err, result) => {
             if (!err) {
+                if (!fs.existsSync('./src/css')){
+                    fs.mkdirSync('./src/css');
+                }
+
                 fs.writeFile('./src/css/style.css', result.css, (err) => {
-                    if (!err) return;
-                    console.log(err);
+                    if (err) throw err;
                 });
 
                 fs.writeFile('./src/css/style.css.map', result.map, (err) => {
-                    if (!err) return;
-                    console.log(err);
+                    if (err) throw err;
                 });
+            } else {
+                throw err;
             }
-            console.log(err);
         })
     );
 });

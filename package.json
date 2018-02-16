@@ -18,6 +18,7 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/echo__off/trellocustomcolors#readme",
   "devDependencies": {
+    "@types/jquery": "^3.3.0",
     "@types/node": "^9.4.6",
     "css-loader": "^0.28.9",
     "gulp": "^3.9.1",

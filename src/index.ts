@@ -1,10 +1,10 @@
-import base64 from 'util/base64';
-const css = require('./css/style.css').toString();
+import Base64 from 'util/base64';
+import * as css from 'util/style';
 
 class PowerTrello {
 
     public static start(): void {
-        console.log(css);        
+        new css.Style();
         // var bigImg = require('../assets/icon-big.png');
         
         // console.log(bigImg);
