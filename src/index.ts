@@ -5,9 +5,9 @@ class PowerTrello {
     dic: dictionary;
     settings: settings;
 
-    target: Element;
-    windowTarget: Element;
-    windowRecursiveTarget: Element;
+    target: Node | null;
+    windowTarget: Node | null;
+    windowRecursiveTarget: Node | null;
 
     config: mutationObserverConfig;
     configWindow: mutationObserverConfig;
@@ -90,7 +90,7 @@ class PowerTrello {
         $('.list-card .list-card-details .js-plugin-badges .badge-text').each(function(){
             let $parent = $(this).parent();
             let $grandParent = $parent.parent().parent().parent().parent().parent();
-            let $innerText = $(this)[0].innerText.toUpperCase();
+            let $innerText = $(this)[0].innerText.toLowerCase();
 
             $parent.removeClass(dic.open)
                    .removeClass(dic.validated)
@@ -98,24 +98,24 @@ class PowerTrello {
                    .removeClass(dic.teamTitle)
                    .removeClass(dic.branch);
 
-            if ($innerText.indexOf(dic.team1.toUpperCase()) > -1) {
+            if ($innerText.indexOf(dic.team1) > -1) {
                 $parent.addClass('team');
                 $grandParent.addClass(dic.team1);
             }
-            if ($innerText.indexOf(dic.team2.toUpperCase()) > -1) {
+            if ($innerText.indexOf(dic.team2) > -1) {
                 $parent.addClass('team');
                 $grandParent.addClass(dic.team2);
             }
-            if ($innerText.indexOf(dic.open.toUpperCase()) > -1) {
+            if ($innerText.indexOf(dic.open) > -1) {
                 $parent.addClass(dic.open);
             }
-            if ($innerText.indexOf(dic.fixed.toUpperCase()) > -1) {
+            if ($innerText.indexOf(dic.fixed) > -1) {
                 $parent.addClass(dic.fixed);
             }
-            if ($innerText.indexOf(dic.validated.toUpperCase()) > -1) {
+            if ($innerText.indexOf(dic.validated) > -1) {
                 $parent.addClass(dic.validated);
             }
-            if ($innerText.indexOf(dic.branch.toUpperCase()) > -1) {
+            if ($innerText.indexOf(dic.branch) > -1) {
                 $parent.addClass(dic.branch);
             }
         });
@@ -139,8 +139,8 @@ class PowerTrello {
         this.removeBadgeClasses();
 
         $('.window .js-plugin-badges .card-detail-item').each(function(){
-            var $innerText0 = $(this).children()[0].innerText.toUpperCase();
-            var $innerText1 = $(this).children()[1].innerText;
+            let $innerText0 = $(this).children()[0].innerText.toLowerCase();
+            let $innerText1 = $(this).children()[1].innerText;
 
             if($innerText0.indexOf(dic.open) > -1) {
                 $(this).addClass(dic.open);
@@ -176,7 +176,7 @@ class PowerTrello {
         });
 
         $labels.each(function(){
-            if ($(this)[0].innerText.toUpperCase() == dic.bug) {
+            if ($(this)[0].innerText.toLowerCase() == dic.bug) {
                 $(this).parent().parent().parent().addClass('has-bug');
             }
         });
@@ -213,7 +213,7 @@ class PowerTrello {
         let count = 0;
 
         $labels.each(function(){
-            count = ($(this)[0].innerText.toUpperCase() == dic.bug.toUpperCase()) ? (count + 1) : count;
+            count = ($(this)[0].innerText.toLowerCase() == dic.bug) ? (count + 1) : count;
         });
         $window.removeClass('has-bug');
 
@@ -251,7 +251,7 @@ class PowerTrello {
             let r = false;
 
             for (var property in el.removedNodes) {
-                if (el.removedNodes[property].innerText && (el.removedNodes[property].innerText.toUpperCase().indexOf(dic.team1.toUpperCase()) > -1 || el.removedNodes[property].innerText.toUpperCase().indexOf(dic.team2.toUpperCase()) > -1)) {
+                if (el.removedNodes[property].innerText && (el.removedNodes[property].innerText.toLowerCase().indexOf(dic.team1) > -1 || el.removedNodes[property].innerText.toLowerCase().indexOf(dic.team2) > -1)) {
                     r = true;
                     that.removeWindowTeamClasses();
                     break;
@@ -335,7 +335,6 @@ class PowerTrello {
                 }
             });
 
-            // @FIXME: Badges colors not showingup. I suspect it has to do with the strings itselves.
             this.windowRecursiveDiv = new MutationObserver((mutations: any): void => {
                 if (mutations.length > 0) {
                     if (
@@ -353,9 +352,9 @@ class PowerTrello {
                 }
             });
 
-            this.windowDiv.observe(this.windowTarget, this.configWindow);
-            this.windowRecursiveDiv.observe(this.windowRecursiveTarget, this.configWindowRecursive);
-            this.body.observe(this.target, this.config);
+            if (this.windowTarget) this.windowDiv.observe(this.windowTarget, this.configWindow);
+            if (this.windowRecursiveTarget) this.windowRecursiveDiv.observe(this.windowRecursiveTarget, this.configWindowRecursive);
+            if (this.target) this.body.observe(this.target, this.config);
             this.addBugIcon();
         });
     }
