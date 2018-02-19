@@ -3,7 +3,9 @@ const fs = require('fs');
 const webpack = require('webpack');
 const config = require('./webpack.config.js');
 const sass = require('node-sass');
-const sassDataURI = require('./src/util/base64.js'); //passar para ts
+const ts = require("typescript");
+const sassDataURI = eval(ts.transpile(fs.readFileSync("./src/util/base64.ts").toString()));
+//const sassDataURI = require('./src/util/base64.js'); //passar para ts
 
 gulp.task('webpack', (done) => {
     return webpack(config).run((done) => {
@@ -30,9 +32,12 @@ gulp.task('sass', () => {
     return (
         sass.render({
             file: './src/scss/_style.scss',
-            sourceMap: true,
+            outFile: './src/css/style.css',
+            sourceMap: './src/css/style.css.map',
+            sourceComment: 'normal',
             outputStyle: 'expanded',
-            functions: sassDataURI
+            omitSourceMapUrl: false,
+            functions: sassDataURI.getFunctions()
         }, (err, result) => {
             if (!err) {
                 if (!fs.existsSync('./src/css')){

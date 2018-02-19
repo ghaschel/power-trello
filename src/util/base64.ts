@@ -1,39 +1,43 @@
-const sass = require('node-sass');
-const fs = require('fs');
+const types = require('node-sass').types;
+const fileSystem = require('fs');
 const path = require('path');
 const mime = require('mime-types');
+let cachedPromises: any = {};
 
-class Base64 {
-    cachedPromises: any = {};
-    'data-url($filePath)': any = (filePath: any, done: any) => {
-        console.log(filePath);
-        this.fileToDataURI(filePath).then((uri: any) => {
-            done(new sass.types.String(`url(${uri})`));
-        });
+namespace Base64 {
+    export function getFunctions():any {
+        return {
+            'data-url($filePath)': (filePath: any, done: any) => {
+                fileToDataURI(filePath).then((uri: any) => {
+                    done(new types.String(`url(${uri})`));
+                });
+            }
+        }
     }
 
-    loadFile(filePath: string): any {
-        if (this.cachedPromises[filePath]) {
-            return this.cachedPromises[filePath];
+    function loadFile(filePath: string): any {
+        if (cachedPromises[filePath]) {
+            return cachedPromises[filePath];
         }
-        var promise = Promise.resolve(path.isAbsolute(filePath) ? filePath : path.join(process.cwd(), filePath));
+        let promise = Promise.resolve(path.isAbsolute(filePath) ? filePath : path.join(process.cwd(), filePath));
     
-        return this.cachedPromises[filePath] = new Promise((resolve, reject) => {
+        return cachedPromises[filePath] = new Promise((resolve, reject) => {
             promise.then((absolutePath: string) => {
                 let normalizedPath = path.normalize(absolutePath).replace(/^file\:|\!.*$/g, '');
 
-                fs.readFile(normalizedPath, (error: any, content: any) => {
+                fileSystem.readFile(normalizedPath, (error: any, content: any) => {
                     error ? reject(error) : resolve({content, normalizedPath});
                 })
             });
         });
     }
 
-    fileToDataURI(filePath: any): any {
+    function fileToDataURI(filePath: any): any {
         filePath = filePath && filePath.getValue() || filePath;
-        return this.loadFile(filePath).then((file: any) => {
-            var mimeType = mime.lookup(file.normalizedPath);
-            var base64 = file.content.toString('base64');
+
+        return loadFile(filePath).then((file: any) => {
+            let mimeType = mime.lookup(file.normalizedPath);
+            let base64 = file.content.toString('base64');
 
             return `"data:${mimeType};base64,${base64}"`;
         }, (error: any) => {
