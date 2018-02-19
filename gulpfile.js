@@ -3,7 +3,7 @@ const fs = require('fs');
 const webpack = require('webpack');
 const config = require('./webpack.config.js');
 const sass = require('node-sass');
-const sassDataURI = require('lib-sass-data-uri');
+const sassDataURI = require('./src/util/base64.js'); //passar para ts
 
 gulp.task('webpack', (done) => {
     return webpack(config).run((done) => {

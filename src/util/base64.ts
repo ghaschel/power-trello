@@ -1,18 +1,45 @@
-var fs = require('fs');
+const sass = require('node-sass');
+const fs = require('fs');
+const path = require('path');
+const mime = require('mime-types');
 
-namespace Base64 {
-    export function decode(fileName: string):string {
-        console.log('teste');
-        console.log(fileName);
-        var bitmap = fs.readFileSync(fileName);
-
-        return new Buffer(bitmap).toString('base64');
+class Base64 {
+    cachedPromises: any = {};
+    'data-url($filePath)': any = (filePath: any, done: any) => {
+        console.log(filePath);
+        this.fileToDataURI(filePath).then((uri: any) => {
+            done(new sass.types.String(`url(${uri})`));
+        });
     }
 
-    export function encode(base64Str: string, fileName: string): void {
-        var bitmap = new Buffer(base64Str, 'base64');
+    loadFile(filePath: string): any {
+        if (this.cachedPromises[filePath]) {
+            return this.cachedPromises[filePath];
+        }
+        var promise = Promise.resolve(path.isAbsolute(filePath) ? filePath : path.join(process.cwd(), filePath));
+    
+        return this.cachedPromises[filePath] = new Promise((resolve, reject) => {
+            promise.then((absolutePath: string) => {
+                let normalizedPath = path.normalize(absolutePath).replace(/^file\:|\!.*$/g, '');
 
-        fs.writeFileSync(fileName, bitmap);
+                fs.readFile(normalizedPath, (error: any, content: any) => {
+                    error ? reject(error) : resolve({content, normalizedPath});
+                })
+            });
+        });
+    }
+
+    fileToDataURI(filePath: any): any {
+        filePath = filePath && filePath.getValue() || filePath;
+        return this.loadFile(filePath).then((file: any) => {
+            var mimeType = mime.lookup(file.normalizedPath);
+            var base64 = file.content.toString('base64');
+
+            return `"data:${mimeType};base64,${base64}"`;
+        }, (error: any) => {
+            console.error(error.toString());
+        });
     }
 }
+
 export default Base64;
