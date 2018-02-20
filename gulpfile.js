@@ -1,11 +1,11 @@
-const gulp = require('gulp');
-const fs = require('fs');
-const webpack = require('webpack');
-const config = require('./webpack.config.js');
-const sass = require('node-sass');
-const ts = require("typescript");
+const gulp        = require('gulp');
+const fs          = require('fs');
+const webpack     = require('webpack');
+const config      = require('./webpack.config.js');
+const sass        = require('node-sass');
+const ts          = require("typescript");
+const del         = require('del');
 const sassDataURI = eval(ts.transpile(fs.readFileSync("./src/util/base64.ts").toString()));
-//const sassDataURI = require('./src/util/base64.js'); //passar para ts
 
 gulp.task('webpack', (done) => {
     return webpack(config).run((done) => {
@@ -56,6 +56,10 @@ gulp.task('sass', () => {
             }
         })
     );
+});
+
+gulp.task('clean', () => {
+    del(['dist', 'src/css', 'package-lock.json']);
 });
 
 gulp.task('default', () => {
