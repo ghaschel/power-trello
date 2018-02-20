@@ -1,6 +1,6 @@
 {
   "name": "power-trello",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Power Trello",
   "main": "dist/userscript.js",
   "scripts": {

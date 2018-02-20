@@ -23,17 +23,17 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 // ==UserScript==
 // @name         Power Trello
-// @version      0.0.1
+// @version      0.0.2
 // @description  Pacote de melhorias para o Trello
 // @author       Guilherme Haschel
-// @icon         https://bytebucket.org/echo__off/trellocustomcolors/raw/master/icon-48.png
-// @icon64       https://bytebucket.org/echo__off/trellocustomcolors/raw/master/icon-64.png
+// @icon         https://bytebucket.org/echo__off/power-trello/raw/master/assets/icon-48.png
+// @icon64       https://bytebucket.org/echo__off/power-trello/raw/master/assets/icon-64.png
 // @domain       trello.com
 // @include      https://trello.com/b/*
 // @include      https://trello.com/c/*
 // @match        https://trello.com/b/*
 // @match        https://trello.com/c/*
-// @updateURL    https://bitbucket.org/echo__off/trellocustomcolors/raw/master/userscript.js
-// @downloadURL  https://bitbucket.org/echo__off/trellocustomcolors/raw/master/userscript.js
+// @updateURL    https://bitbucket.org/echo__off/power-trello/raw/master/dist/userscript.js
+// @downloadURL  https://bitbucket.org/echo__off/power-trello/raw/master/dist/userscript.js
 // @license      MIT
 // ==/UserScript==
