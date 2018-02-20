@@ -37,6 +37,4 @@ ehthumbs.db
 Thumbs.db
 
 node_modules
-src/css
-dist
 package-lock.json
