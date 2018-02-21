@@ -4,6 +4,15 @@ body {
     background-position: 50% 50%;
 }
 
+.header-logo {
+    filter: brightness(100);
+    opacity: 0.7;
+
+    &-default {
+        background-image: data-url('./assets/header.png');
+    }
+}
+
 .window {
     box-shadow: 0px -5px 0px unquote($colorNoTeam);
 
@@ -14,7 +23,7 @@ body {
     }
 
     &.has-bug {
-        background-image: data-url('./assets/icon-big.png');
+        background-image: data-url('./assets/icon-150.png');
         background-repeat: no-repeat;
         background-size: 150px;
         background-position: 105% -20px;
@@ -113,7 +122,7 @@ body {
         background-size: 48px;
         background-position: 106% -6px;
         background-repeat: no-repeat;
-        background-image: data-url('./assets/icon-small.png');
+        background-image: data-url('./assets/icon-48.png');
     }
 
     .list-card-members {

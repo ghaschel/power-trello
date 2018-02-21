@@ -63,16 +63,22 @@ class PowerTrello {
         this.loadEvents();
     }
 
-    private addWindowTeamClasses(team: any): void {
-        this.removeWindowTeamClasses();
-        $('.window').addClass(team.toLowerCase());
-    };
+    // board
 
-    private removeWindowTeamClasses(): void {
-        let $window = $('.window');
+    private addBugIcon(): void {
+        let dic = this.dic;
+        let $labelsWithoutRed = $('.list-card');
+        let $labels = $('.list-card .card-label.card-label-red');
 
-        $window.removeClass(this.dic.team1);
-        $window.removeClass(this.dic.team2);
+        $labelsWithoutRed.each(function(){
+            $(this).removeClass('has-bug');
+        });
+
+        $labels.each(function(){
+            if ($(this)[0].innerText.toLowerCase() == dic.bug) {
+                $(this).parent().parent().parent().addClass('has-bug');
+            }
+        });
     };
 
     private addTeamClasses(): void {
@@ -121,6 +127,20 @@ class PowerTrello {
         });
     };
 
+    //window functions
+
+    private addWindowTeamClasses(team: any): void {
+        this.removeWindowTeamClasses();
+        $('.window').addClass(team.toLowerCase());
+    };
+
+    private removeWindowTeamClasses(): void {
+        let $window = $('.window');
+
+        $window.removeClass(this.dic.team1);
+        $window.removeClass(this.dic.team2);
+    };
+
     private removeBadgeClasses(): void {
         let dic = this.dic;
 
@@ -166,46 +186,6 @@ class PowerTrello {
         });
     };
 
-    private addBugIcon(): void {
-        let dic = this.dic;
-        let $labelsWithoutRed = $('.list-card');
-        let $labels = $('.list-card .card-label.card-label-red');
-
-        $labelsWithoutRed.each(function(){
-            $(this).removeClass('has-bug');
-        });
-
-        $labels.each(function(){
-            if ($(this)[0].innerText.toLowerCase() == dic.bug) {
-                $(this).parent().parent().parent().addClass('has-bug');
-            }
-        });
-    };
-
-    private isWindowUp(mutation: any): boolean {
-        let oldV = mutation.oldValue;
-        let newV = mutation.target.className;
-        let isWindowUp = false;
-
-        if (oldV !== null && newV !== null) {
-            isWindowUp = (oldV.indexOf('window-up') > -1 && newV.indexOf('window-up') === -1) ? true : false;
-        }
-
-        return isWindowUp;
-    };
-
-    private isQuickEditRemoved(removedNodes: any): boolean {
-        return removedNodes.className == 'quick-card-editor';
-    };
-
-    private isWindowOpen(mutation: any): boolean {
-        return (mutation.oldValue == 'display: none;' || mutation.oldValue === null);
-    };
-
-    private isWindowClosed(mutation: any): boolean {
-        return mutation.oldValue == 'display: block;';
-    };
-
     private addBugClassToWindow(): void {
         let dic = this.dic;
         let $labels = $('.window .card-label.card-label-red');
@@ -220,6 +200,32 @@ class PowerTrello {
         if ($labels.length > 0 && count > 0) {
             $window.addClass('has-bug');
         }
+    };
+
+    //status change
+
+    private isQuickEditRemoved(removedNodes: any): boolean {
+        return removedNodes.className == 'quick-card-editor';
+    };
+
+    private isWindowUp(mutation: any): boolean {
+        let oldV = mutation.oldValue;
+        let newV = mutation.target.className;
+        let isWindowUp = false;
+
+        if (oldV !== null && newV !== null) {
+            isWindowUp = (oldV.indexOf('window-up') > -1 && newV.indexOf('window-up') === -1) ? true : false;
+        }
+
+        return isWindowUp;
+    };
+
+    private isWindowOpen(mutation: any): boolean {
+        return (mutation.oldValue == 'display: none;' || mutation.oldValue === null);
+    };
+
+    private isWindowClosed(mutation: any): boolean {
+        return mutation.oldValue == 'display: block;';
     };
 
     private isBadgeAdded(mutations: any): boolean {
