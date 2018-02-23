@@ -190,7 +190,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             this.removeBadgeClasses();
             $(".window .js-plugin-badges .card-detail-item").each(function() {
                 let $innerText0 = $(this).children()[0].innerText.toLowerCase();
-                let $innerText1 = $(this).children()[1].innerText;
+                let $innerText1 = $(this).children()[1].innerText.toLowerCase();
                 if ($innerText0.indexOf(dic.open) > -1) {
                     $(this).addClass(dic.open);
                 }

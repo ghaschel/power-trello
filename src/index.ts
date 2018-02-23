@@ -13,12 +13,19 @@ class PowerTrello {
     configWindow: mutationObserverConfig;
     configWindowRecursive: mutationObserverConfig;
 
-    body: MutationObserver;
-    windowDiv: MutationObserver;
-    windowRecursiveDiv: MutationObserver;
+    body: MutationObserver | null;
+    windowDiv: MutationObserver | null;
+    windowRecursiveDiv: MutationObserver | null;
 
     constructor() {
         css.default.applyStyles();
+
+        this.target = null;
+        this.windowTarget = null;
+        this.windowRecursiveTarget = null;
+        this.body = null;
+        this.windowDiv = null
+        this.windowRecursiveDiv = null;
 
         this.settings = {
             refreshTime: 1
@@ -160,7 +167,7 @@ class PowerTrello {
 
         $('.window .js-plugin-badges .card-detail-item').each(function(){
             let $innerText0 = $(this).children()[0].innerText.toLowerCase();
-            let $innerText1 = $(this).children()[1].innerText;
+            let $innerText1 = $(this).children()[1].innerText.toLowerCase();
 
             if($innerText0.indexOf(dic.open) > -1) {
                 $(this).addClass(dic.open);
