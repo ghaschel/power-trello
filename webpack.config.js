@@ -1,28 +1,33 @@
 const path = require('path');
-const fs = require('fs');
 const webpack = require('webpack');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const config = require('./general-config.js');
 
-require.extensions['.header'] = function (module, filename) {
-  module.exports = fs.readFileSync(filename, 'utf8');
-};
+function getRules() {
+  let rules = [];
+
+  if (config.cssLoader) rules.push(config.cssLoaderConfig);
+  if (config.tsLoader) rules.push(config.tsLoaderConfig);
+
+  return rules;
+}
+
+function getPlugins() {
+  let plugins =  [];
+
+  if (config.uglifyWebpackConfig) plugins.push(new UglifyJSPlugin(config.uglifyWebpackConfig));
+  if (config.bannerWebpack) plugins.push(new webpack.BannerPlugin(config.bannerWebpackConfig));
+
+  return plugins;
+}
 
 module.exports = {
   entry: './src/index.ts',
   devtool: 'source-map',
+  name: 'PowerTrello',
   target: 'web',
   module: {
-    rules: [
-      {
-        test: /\.tsx?$/,
-        use: 'ts-loader',
-        exclude: /node_modules/
-      },
-      {
-        test: /\.css$/,
-        use: 'css-loader',
-      }
-    ]
+    rules: getRules()
   },
   resolve: {
     extensions: [ '.tsx', '.ts', '.js' ]
@@ -31,23 +36,5 @@ module.exports = {
     filename: 'userscript.js',
     path: path.resolve(__dirname, 'dist')
   },
-  plugins: [
-    new UglifyJSPlugin({
-      parallel: 4,
-      sourceMap: true,
-      uglifyOptions: {
-        mangle: false,
-        compress: false,
-        output: {
-          beautify: true,
-          comments: false
-        }
-      }
-    }),
-    new webpack.BannerPlugin({
-      banner: require('./block.header'),
-      raw: true,
-      entryOnly: true
-    })
-  ]
+  plugins: getPlugins()
 }

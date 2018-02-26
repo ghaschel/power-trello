@@ -1,30 +1,45 @@
-const gulp        = require('gulp');
-const fs          = require('fs');
-const webpack     = require('webpack');
-const config      = require('./webpack.config.js');
-const sass        = require('node-sass');
-const ts          = require("typescript");
-const del         = require('del');
-const sassDataURI = eval(ts.transpile(fs.readFileSync("./src/util/base64.ts").toString()));
+const gulp          = require('gulp');
+const fs            = require('fs');
+const webpack       = require('webpack');
+const config        = require('./general-config.js');
+const webpackConfig = require('./webpack.config.js');
+const sass          = require('node-sass');
+const ts            = require("typescript");
+const del           = require('del');
+const sassDataURI   = eval(ts.transpile(fs.readFileSync("./src/util/base64.ts").toString()));
+const imagemin      = require('imagemin');
+const jpegTran      = require('imagemin-jpegtran');
+const pngquant      = require('imagemin-pngquant');
+
 
 gulp.task('webpack', (done) => {
-    return webpack(config).run((done) => {
-        return (err, stats) => {
-            if (err) {
-                console.log('Error', err);
-                if (done) {
-                    done();
-                }
-            } else {
-                Object.keys(stats.compilation.assets).forEach((key) => {
-                    console.log('Webpack: output ' + key);
-                });
-                console.log('Webpack: finished ' + stats.compilation.name);
-                if (done) {
-                    done();
-                }
+    return webpack(webpackConfig).run((err, stats) => {
+        if (err) {
+            console.log('Error', err);
+            if (done) {
+                done();
             }
-        };
+        } else {
+            Object.keys(stats.compilation.assets).forEach((key) => {
+                console.log('Webpack: output ' + key);
+            });
+            console.log('Webpack: finished ' + stats.compilation.name);
+            if (done) {
+                done();
+            }
+        }
+    });
+});
+
+gulp.task('imagemin', (done) => {
+    imagemin(['assets/*.{jpg,png}'], 'assets', {
+        plugins: [
+            jpegTran({ progressive: true, arithmetic: true }),
+            pngquant({quality: '65-80', speed: 1})
+        ]
+    }).then(files => {
+        done();
+        // console.log(files);
     });
 });
 
@@ -60,6 +75,10 @@ gulp.task('sass', () => {
 
 gulp.task('clean', () => {
     del(['dist', 'src/css', 'package-lock.json']);
+});
+
+gulp.task('build', () => {
+    gulp.series(['clean', 'imagemin', 'sass', 'webpack']);
 });
 
 gulp.task('default', () => {
