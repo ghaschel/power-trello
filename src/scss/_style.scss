@@ -42,30 +42,19 @@ body {
         text-align: center;
     }
 
-    .js-plugin-badges {
-        width: 100%;
-        float: left;
-
-        .card-detail-item {
-            margin-right: 20px !important;
-
-            &:last-of-type {
-                margin-right: 0 !important;
-            }
-        }
-    }
-
     @for $i from 0 to length($textTeamArray) {
         &.#{nth($textTeamArray, $i+1)} {
-            .js-plugin-badges .card-detail-item {
+            .js-custom-field-detail-badges .card-detail-item {
                 &.#{$textTeamTitle} {
-                    .card-detail-badge {
-                        background-color: unquote(nth($colorTeamArray, $i+1));
-                        color: #fff;
-                        font-weight: 800;
-
-                        &:hover {
-                            opacity: .75;
+                    &:not(.editing) {
+                        .card-detail-badge {
+                            background-color: unquote(nth($colorTeamArray, $i+1));
+                            color: #fff;
+                            font-weight: 800;
+    
+                            &:hover {
+                                opacity: .75;
+                            }
                         }
                     }
                 }
@@ -74,15 +63,17 @@ body {
     }
 
     @for $i from 0 to length($textStatusArray) {
-        .js-plugin-badges .card-detail-item {
+        .js-custom-field-detail-badges .card-detail-item {
             &.#{nth($textStatusArray, $i+1)} {
-                .card-detail-badge {
-                    background-color: unquote(nth($colorStatusArray, $i+1));
-                    color: #fff;
-                    font-weight: 800;
-
-                    &:hover {
-                        opacity: .75;
+                &:not(.editing) {
+                    .card-detail-badge {
+                        background-color: unquote(nth($colorStatusArray, $i+1));
+                        color: #fff;
+                        font-weight: 800;
+    
+                        &:hover {
+                            opacity: .75;
+                        }
                     }
                 }
             }
@@ -170,7 +161,7 @@ body {
             width: 100%;
             margin-top: 5px;
 
-            .js-plugin-badges {
+            .js-custom-field-badges {
                 .badge {
                     @for $i from 0 to length($textStatusArray) {
                         &.#{nth($textStatusArray, $i+1)} {
@@ -200,7 +191,7 @@ body {
             }
         }
 
-        .js-plugin-badges .badge.team {
+        .js-custom-field-badges .badge.team {
             float: right;
             margin-right: 0px;
         }
@@ -216,7 +207,7 @@ body {
                 margin-top: 3px;
             }
 
-            .list-card-details .badges .js-plugin-badges {
+            .list-card-details .badges .js-custom-field-badges {
                 .badge.team {
                     background-color: unquote(nth($colorTeamArray, $i+1));
                     border-radius: 3px;

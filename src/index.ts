@@ -100,7 +100,7 @@ class PowerTrello {
             $(this).removeClass('team');
         });
 
-        $('.list-card .list-card-details .js-plugin-badges .badge-text').each(function(){
+        $(".list-card .list-card-details .js-custom-field-badges .badge-text").each(function() {
             let $parent = $(this).parent();
             let $grandParent = $parent.parent().parent().parent().parent().parent();
             let $innerText = $(this)[0].innerText.toLowerCase();
@@ -151,7 +151,7 @@ class PowerTrello {
     private removeBadgeClasses(): void {
         let dic = this.dic;
 
-        $('.window .js-plugin-badges .card-detail-item').each(function(){
+        $('.window .js-custom-field-detail-badges .card-detail-item').each(function(){
             $(this).removeClass(dic.open)
                    .removeClass(dic.validated)
                    .removeClass(dic.fixed)
@@ -165,7 +165,7 @@ class PowerTrello {
         let dic = this.dic;
         this.removeBadgeClasses();
 
-        $('.window .js-plugin-badges .card-detail-item').each(function(){
+        $('.window .js-custom-field-detail-badges .card-detail-item').each(function(){
             let $innerText0 = $(this).children()[0].innerText.toLowerCase();
             let $innerText1 = $(this).children()[1].innerText.toLowerCase();
 
@@ -221,7 +221,7 @@ class PowerTrello {
         let isWindowUp = false;
 
         if (oldV !== null && newV !== null) {
-            isWindowUp = (oldV.indexOf('window-up') > -1 && newV.indexOf('window-up') === -1) ? true : false;
+            isWindowUp = (oldV.indexOf('window-up') > -1 && newV.indexOf('window-up') === -1) ? false : true;
         }
 
         return isWindowUp;
@@ -242,7 +242,7 @@ class PowerTrello {
             let r = false;
 
             if (el.target.className === 'js-plugin-badges' ||
-                el.previousSibling && el.previousSibling.className && el.previousSibling.className.indexOf('card-detail-item') ||
+                el.previousSibling && el.previousSibling.className && el.previousSibling.className.indexOf('card-detail-item') > -1 ||
                 el.target.firstChild && el.target.firstChild.className && el.target.firstChild.className.indexOf('card-detail-item') > -1 ||
                 el.target.className && el.target.className.indexOf('card-detail-item') > -1
                ) {
@@ -332,6 +332,8 @@ class PowerTrello {
                         (mutations[0].removedNodes.length > 0 && this.isQuickEditRemoved(mutations[0].removedNodes[0]))
                     ) {
                         this.addBugIcon();
+                        this.addBadgeClasses();
+                        this.addTeamClasses();
                     }
                 }
             });
