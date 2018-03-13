@@ -44,7 +44,7 @@ gulp.task('imagemin', (done) => {
 });
 
 gulp.task('sass', () => {
-    return (
+    return ( new Promise((resolve, reject) => {
         sass.render({
             file: './src/scss/_style.scss',
             outFile: './src/css/style.css',
@@ -60,26 +60,35 @@ gulp.task('sass', () => {
                 }
 
                 fs.writeFile('./src/css/style.css', result.css, (err) => {
-                    if (err) throw err;
+                    if (err){
+                        reject(err);
+                    } else {
+                        resolve()
+                    }
                 });
 
                 fs.writeFile('./src/css/style.css.map', result.map, (err) => {
-                    if (err) throw err;
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve();
+                    }
                 });
             } else {
-                throw err;
+                reject(err);
             }
-        })
-    );
+        });
+    }))
+        
 });
 
-gulp.task('clean', () => {
-    del(['dist', 'src/css', 'package-lock.json']);
+gulp.task('clean', (done) => {
+    del(['dist', 'src/css', 'package-lock.json']).then(()=> {
+        done()
+    });
 });
 
-gulp.task('build', () => {
-    gulp.series(['clean', 'imagemin', 'sass', 'webpack']);
-});
+gulp.task('build', gulp.series('clean', 'imagemin', 'sass', 'webpack'));
 
 gulp.task('default', () => {
     gulp.watch([
