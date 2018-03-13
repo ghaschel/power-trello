@@ -216,15 +216,10 @@ class PowerTrello {
     };
 
     private isWindowUp(mutation: any): boolean {
-        let oldV = mutation.oldValue;
-        let newV = mutation.target.className;
-        let isWindowUp = false;
+        let oldV = mutation.oldValue || '';
+        let newV = mutation.target.className || '';
 
-        if (oldV !== null && newV !== null) {
-            isWindowUp = (oldV.indexOf('window-up') > -1 && newV.indexOf('window-up') === -1) ? false : true;
-        }
-
-        return isWindowUp;
+        return oldV.indexOf('window-up') === -1 && newV.indexOf('window-up') > -1;
     };
 
     private isWindowOpen(mutation: any): boolean {
@@ -240,11 +235,14 @@ class PowerTrello {
 
         let a = mutations.some((el: any) => {
             let r = false;
+            let ps = el.previousSibling;
+            let t = el.target;
+            let fc = t.firstChild;
 
             if (el.target.className === 'js-plugin-badges' ||
-                el.previousSibling && el.previousSibling.className && el.previousSibling.className.indexOf('card-detail-item') > -1 ||
-                el.target.firstChild && el.target.firstChild.className && el.target.firstChild.className.indexOf('card-detail-item') > -1 ||
-                el.target.className && el.target.className.indexOf('card-detail-item') > -1
+                ps && ps.className && ps.className.indexOf('card-detail-item') > -1 ||
+                fc && fc.className && fc.className.indexOf('card-detail-item') > -1 ||
+                t.className && t.className.indexOf('card-detail-item') > -1
                ) {
                 that.addBadgeClasses();
                 r = true;
@@ -262,9 +260,12 @@ class PowerTrello {
 
         let a = mutations.some((el: any) => {
             let r = false;
+            let rn = el.removedNodes;
 
-            for (var property in el.removedNodes) {
-                if (el.removedNodes[property].innerText && (el.removedNodes[property].innerText.toLowerCase().indexOf(dic.team1) > -1 || el.removedNodes[property].innerText.toLowerCase().indexOf(dic.team2) > -1)) {
+            for (var property in rn) {
+                if (rn[property].innerText && (rn[property].innerText.toLowerCase().indexOf(dic.team1) > -1 || 
+                    rn[property].innerText.toLowerCase().indexOf(dic.team2) > -1)
+                ) {
                     r = true;
                     that.removeWindowTeamClasses();
                     break;
@@ -280,11 +281,14 @@ class PowerTrello {
     private wereLabelsAdded(mutations: any): boolean {
         let a = mutations.some((el: any): boolean => {
             let r = false;
+            let an = el.addedNodes;
 
-            if (el.addedNodes.length > 0) {
-                for (var property in el.addedNodes) {
-                    if (el.addedNodes.hasOwnProperty(property)) {
-                        if (el.addedNodes[property].className && el.addedNodes[property].className.indexOf('card-label-red') > -1) {
+            if (an.length > 0) {
+                for (var property in an) {
+                    if (an.hasOwnProperty(property)) {
+                        if (an[property].className &&
+                            an[property].className.indexOf('card-label-red') > -1
+                        ) {
                             r = true;
                             break;
                         }
@@ -301,11 +305,14 @@ class PowerTrello {
     private wereLabelsRemoved(mutations: any): boolean {
         let a = mutations.some((el: any) => {
             let r = false;
+            let rn = el.removedNodes;
 
-            if (el.removedNodes.length > 0) {
-                for (var property in el.removedNodes) {
-                    if (el.removedNodes.hasOwnProperty(property)) {
-                        if (el.removedNodes[property].className && el.removedNodes[property].className.indexOf('card-label-red') > -1) {
+            if (rn.length > 0) {
+                for (var property in rn) {
+                    if (rn.hasOwnProperty(property)) {
+                        if (rn[property].className && 
+                            rn[property].className.indexOf('card-label-red') > -1
+                        ) {
                             r = true;
                             break;
                         }
@@ -326,44 +333,54 @@ class PowerTrello {
             this.windowRecursiveTarget = document.querySelector(".window");
 
             this.body = new MutationObserver((mutations: any): void => {
-                if (mutations.length > 0) {
-                    if (
-                        (mutations[0].attributeName === 'class' && this.isWindowUp(mutations[0])) ||
-                        (mutations[0].removedNodes.length > 0 && this.isQuickEditRemoved(mutations[0].removedNodes[0]))
-                    ) {
-                        this.addBugIcon();
-                        this.addBadgeClasses();
-                        this.addTeamClasses();
-                    }
+                if (mutations.length === 0) return;
+
+                let m = mutations[0];
+
+                if (
+                    (m.attributeName === 'class' && this.isWindowUp(m)) ||
+                    (m.removedNodes.length > 0 && this.isQuickEditRemoved(m.removedNodes[0]))
+                ) {
+                    this.addBugIcon();
+                    this.addBadgeClasses();
+                    this.addTeamClasses();
                 }
             });
 
             this.windowDiv = new MutationObserver((mutations: any): void => {
-                if (mutations.length > 0) {
-                    if(mutations[0].attributeName === 'style' && this.isWindowOpen(mutations[0])) {
-                        this.addBugClassToWindow();
-                    }
-                    if(mutations[0].attributeName === 'style' && this.isWindowClosed(mutations[0])) {
-                        this.addBugIcon();
-                        this.addTeamClasses();
-                    }
+                if (mutations.length === 0) return;
+
+                let m = mutations[0];
+
+                console.log('windowDiv');
+                console.log('isWindowOpen', this.isWindowOpen(m));
+                console.log('isWindowClosed', this.isWindowClosed(m))
+                
+                if(m.attributeName === 'style' && this.isWindowOpen(m)) {
+                    this.addBugClassToWindow();
+                }
+
+                if(m.attributeName === 'style' && this.isWindowClosed(m)) {
+                    this.addBugIcon();
+                    this.addTeamClasses();
                 }
             });
 
             this.windowRecursiveDiv = new MutationObserver((mutations: any): void => {
-                if (mutations.length > 0) {
-                    if (
-                        this.wereLabelsAdded(mutations) ||
-                        this.wereLabelsRemoved(mutations)
-                    ) {
-                        this.addBugClassToWindow();
-                    }
-                    if (
-                        this.isBadgeAdded(mutations) ||
-                        this.isBadgeRemoved(mutations)
-                    ) {
-                        this.addTeamClasses();
-                    }
+                if (mutations.length === 0) return;
+
+                console.log('windowRecursive');
+                console.log('wereLabelsAdded', this.wereLabelsAdded(mutations));
+                console.log('wereLabelsRemoved', this.wereLabelsRemoved(mutations));
+                console.log('isBadgeAdded', this.isBadgeAdded(mutations));
+                console.log('isBadgeremoved', this.isBadgeRemoved(mutations));
+
+                if (this.wereLabelsAdded(mutations) || this.wereLabelsRemoved(mutations)) {
+                    this.addBugClassToWindow();
+                }
+
+                if (this.isBadgeAdded(mutations) || this.isBadgeRemoved(mutations)) {
+                    this.addTeamClasses();
                 }
             });
 

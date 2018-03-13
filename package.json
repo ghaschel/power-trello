@@ -7,7 +7,7 @@
     "webpack": "node_modules/bin/webpack --config webpack.config.js",
     "clean": "gulp clean",
     "sass": "./node_modules/node-sass/bin/node-sass src/scss/_style.scss -o dist",
-    "postinstall": "npm rebuild node-sass && gulp build"
+    "postinstall": "npm rebuild node-sass && npx gulp build"
   },
   "repository": {
     "type": "git",
