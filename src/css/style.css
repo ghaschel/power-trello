@@ -15,11 +15,11 @@ body {
   box-shadow: 0px -5px 0px #a6a6a6;
 }
 
-.window.pgd-01 {
+.window.team-01 {
   box-shadow: 0px -5px 0px #ab7dab;
 }
 
-.window.pgd-02 {
+.window.team-02 {
   box-shadow: 0px -5px 0px #5d9e9e;
 }
 
@@ -40,23 +40,23 @@ body {
   text-align: center;
 }
 
-.window.pgd-01 .js-custom-field-detail-badges .card-detail-item.time:not(.editing) .card-detail-badge {
+.window.team-01 .js-custom-field-detail-badges .card-detail-item.time:not(.editing) .card-detail-badge {
   background-color: #ab7dab;
   color: #fff;
   font-weight: 800;
 }
 
-.window.pgd-01 .js-custom-field-detail-badges .card-detail-item.time:not(.editing) .card-detail-badge:hover {
+.window.team-01 .js-custom-field-detail-badges .card-detail-item.time:not(.editing) .card-detail-badge:hover {
   opacity: .75;
 }
 
-.window.pgd-02 .js-custom-field-detail-badges .card-detail-item.time:not(.editing) .card-detail-badge {
+.window.team-02 .js-custom-field-detail-badges .card-detail-item.time:not(.editing) .card-detail-badge {
   background-color: #5d9e9e;
   color: #fff;
   font-weight: 800;
 }
 
-.window.pgd-02 .js-custom-field-detail-badges .card-detail-item.time:not(.editing) .card-detail-badge:hover {
+.window.team-02 .js-custom-field-detail-badges .card-detail-item.time:not(.editing) .card-detail-badge:hover {
   opacity: .75;
 }
 
@@ -231,55 +231,55 @@ body {
   margin-right: 0px;
 }
 
-.list-card.pgd-01 {
+.list-card.team-01 {
   box-shadow: 0px -3px 0px #ab7dab;
   margin-bottom: 6px;
   margin-top: 9px;
 }
 
-.list-card.pgd-01:first-child {
+.list-card.team-01:first-child {
   margin-top: 3px;
 }
 
-.list-card.pgd-01 .list-card-details .badges .js-custom-field-badges .badge.team {
+.list-card.team-01 .list-card-details .badges .js-custom-field-badges .badge.team {
   background-color: #ab7dab;
   border-radius: 3px;
   padding-left: 4px;
   padding-right: 4px;
 }
 
-.list-card.pgd-01 .list-card-details .badges .js-custom-field-badges .badge-text {
+.list-card.team-01 .list-card-details .badges .js-custom-field-badges .badge-text {
   color: #fff;
   font-weight: 800;
 }
 
-.list-card.pgd-01 .list-card-members .member {
+.list-card.team-01 .list-card-members .member {
   border: 2px solid #ab7dab;
 }
 
-.list-card.pgd-02 {
+.list-card.team-02 {
   box-shadow: 0px -3px 0px #5d9e9e;
   margin-bottom: 6px;
   margin-top: 9px;
 }
 
-.list-card.pgd-02:first-child {
+.list-card.team-02:first-child {
   margin-top: 3px;
 }
 
-.list-card.pgd-02 .list-card-details .badges .js-custom-field-badges .badge.team {
+.list-card.team-02 .list-card-details .badges .js-custom-field-badges .badge.team {
   background-color: #5d9e9e;
   border-radius: 3px;
   padding-left: 4px;
   padding-right: 4px;
 }
 
-.list-card.pgd-02 .list-card-details .badges .js-custom-field-badges .badge-text {
+.list-card.team-02 .list-card-details .badges .js-custom-field-badges .badge-text {
   color: #fff;
   font-weight: 800;
 }
 
-.list-card.pgd-02 .list-card-members .member {
+.list-card.team-02 .list-card-members .member {
   border: 2px solid #5d9e9e;
 }
 
