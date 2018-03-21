@@ -1,13 +1,12 @@
 {
   "name": "power-trello",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Power Trello",
   "main": "dist/userscript.js",
   "scripts": {
     "webpack": "node_modules/bin/webpack --config webpack.config.js",
     "clean": "gulp clean",
-    "sass": "./node_modules/node-sass/bin/node-sass src/scss/_style.scss -o dist",
-    "postinstall": "npm rebuild node-sass && npx gulp build"
+    "postinstall": "npm rebuild node-sass && ./node_modules/gulp/bin/gulp.js build"
   },
   "repository": {
     "type": "git",

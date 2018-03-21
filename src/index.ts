@@ -285,13 +285,12 @@ class PowerTrello {
 
             if (an.length > 0) {
                 for (var property in an) {
-                    if (an.hasOwnProperty(property)) {
-                        if (an[property].className &&
-                            an[property].className.indexOf('card-label-red') > -1
-                        ) {
-                            r = true;
-                            break;
-                        }
+                    if (an.hasOwnProperty(property) &&
+                        an[property].className &&
+                        an[property].className.indexOf('card-label-red') > -1
+                    ) {
+                        r = true;
+                        break;
                     }
                 }
             }
@@ -309,13 +308,12 @@ class PowerTrello {
 
             if (rn.length > 0) {
                 for (var property in rn) {
-                    if (rn.hasOwnProperty(property)) {
-                        if (rn[property].className && 
-                            rn[property].className.indexOf('card-label-red') > -1
-                        ) {
-                            r = true;
-                            break;
-                        }
+                    if (rn.hasOwnProperty(property) &&
+                        rn[property].className &&
+                        rn[property].className.indexOf('card-label-red') > -1
+                    ) {
+                        r = true;
+                        break;
                     }
                 }
             }
