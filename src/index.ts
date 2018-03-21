@@ -32,8 +32,8 @@ class PowerTrello {
         };
 
         this.dic = {
-            team1: 'pgd-01',
-            team2: 'pgd-02',
+            team1: 'team-01',
+            team2: 'team-02',
             teamTitle: 'time',
             bug: 'bug',
             open: 'aberto',
@@ -350,10 +350,6 @@ class PowerTrello {
 
                 let m = mutations[0];
 
-                console.log('windowDiv');
-                console.log('isWindowOpen', this.isWindowOpen(m));
-                console.log('isWindowClosed', this.isWindowClosed(m))
-                
                 if(m.attributeName === 'style' && this.isWindowOpen(m)) {
                     this.addBugClassToWindow();
                 }
@@ -366,12 +362,6 @@ class PowerTrello {
 
             this.windowRecursiveDiv = new MutationObserver((mutations: any): void => {
                 if (mutations.length === 0) return;
-
-                console.log('windowRecursive');
-                console.log('wereLabelsAdded', this.wereLabelsAdded(mutations));
-                console.log('wereLabelsRemoved', this.wereLabelsRemoved(mutations));
-                console.log('isBadgeAdded', this.isBadgeAdded(mutations));
-                console.log('isBadgeremoved', this.isBadgeRemoved(mutations));
 
                 if (this.wereLabelsAdded(mutations) || this.wereLabelsRemoved(mutations)) {
                     this.addBugClassToWindow();
